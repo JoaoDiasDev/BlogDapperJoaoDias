@@ -1,4 +1,5 @@
-﻿        <!--================Home Banner Area =================-->
+﻿@model GeneralViewModel
+        <!--================Home Banner Area =================-->
         <section class="banner_area">
             <div class="banner_inner d-flex align-items-center">
             	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
@@ -20,17 +21,90 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
+                        <h1 class="text-center mb-20">Add A New Article</h1>
                         <form action="Save" method="post" enctype="multipart/form-data">
-                            
-                            <div class="mt-10">
-                                <input type="text" name="NameSurname" placeholder="First Name and Surname" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name and Surname'" required class="single-input">
+                            <div class="col-md-12">
+                                <div asp-validation-summary="All" class="text-danger"></div>
                             </div>
-
+                            <div class="mt-10">
+                                <input type="text" asp-for="@Model.Article.NameSurname" name="NameSurname" placeholder="First" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name and Surname'" required class="single-input">
+                                <span asp-validation-for="@Model.Article.NameSurname" class="text-danger"></span>
+                            </div>
+                            <div class="mt-10">
+                                <input type="text" asp-for="@Model.Article.Email" name="Email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" required class="single-input">
+                                <span asp-validation-for="@Model.Article.Email" class="text-danger"></span>
+                            </div>
+                            <div class="mt-10">
+                                <input type="text" name="Phone" placeholder="Phone" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone'" class="single-input">
+                            </div>
+                            <div class="mt-10">
+                                <input type="text" asp-for="@Model.Article.Title" name="Title" placeholder="Title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Title'" required class="single-input">
+                                <span asp-validation-for="@Model.Article.Title" class="text-danger"></span>
+                            </div>
+                            <div class="mt-10">
+                                <select asp-for="@Model.Article.CategoryId" name="CategoryId" required class="form-control">
+                                    <option value="">Please select a category</option>
+                                    @foreach (var category in Model.CategoryList)
+                                    {
+                                        <option value="@category.CategoryId">@category.CategoryName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="mt-10">
+                                <select asp-for="@Model.Article.CityId" name="CityId" required class="form-control">
+                                    <option value="">Please select a city</option>
+                                    @foreach (var city in Model.CityList)
+                                    {
+                                        <option value="@city.CityId">@city.CityName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="mt-10">
+                                <textarea asp-for="@Model.Article.Content" name="Content" class="single-textarea" placeholder="Content" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Content'" required></textarea>
+                            </div>
+                            <div class="mt-10" onclick="$('#image').click();">
+                                Upload Images<br/>
+                                <label class="btn btn-default">
+                                    <div class="fileUpload">
+                                        <span>Select An Image</span>
+                                        <input type="file" class="uploadFile" name="file"/>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="mt-10">
+                                <button type="submit" class="genric-btn success circle arrow">Post<span class="lnr lnr-arrow-right"></span></button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
         <!--================Contact Area =================-->
-        
-       
+@section Scripts {
+    
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            //Upload button on change call function
+            $(".uploadFile").change(function() {
+                readURL(this);
+            });
+
+            //Read file and return value
+            function readURL(input) {
+                var url = input.value;
+                var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+                if (input.files && input.files[0] && (ext === "png" || ext === "jpeg" || ext === "jpg")) {
+
+                } 
+                else {
+                    alert("Only image files are acceptable!")
+                    $('.uploadFile').val('');
+                }
+            }
+        });
+    </script>
+    
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+}
