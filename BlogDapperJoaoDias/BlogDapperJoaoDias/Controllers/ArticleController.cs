@@ -11,12 +11,14 @@ namespace BlogDapperJoaoDias.Controllers
         private CategoryService _categoryService;
         private CityService _cityService;
         private IWebHostEnvironment _hostingEnvironment;
+        private ArticleService _articleService;
 
         public ArticleController(IServiceProvider serviceProvider)
         {
             _categoryService = serviceProvider.GetRequiredService<CategoryService>();
             _cityService = serviceProvider.GetRequiredService<CityService>();
             _hostingEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+            _articleService = serviceProvider.GetRequiredService<ArticleService>();
         }
 
         public IActionResult Index()
@@ -38,6 +40,7 @@ namespace BlogDapperJoaoDias.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Save(Article model, IFormFile file)
         {
             if (ModelState.IsValid)
@@ -46,7 +49,7 @@ namespace BlogDapperJoaoDias.Controllers
                 model.Guid = guid.ToString();
                 model.CreatedDate = DateTime.Now;
                 model.ModifiedDate = DateTime.Now;
-                model.PublishingDate = DateTime.Now;
+                model.PublishDate = DateTime.Now;
                 if (file.Length > 0)
                 {
                     var uploadHelper = new UploadHelpers(_hostingEnvironment);
@@ -57,16 +60,36 @@ namespace BlogDapperJoaoDias.Controllers
                     }
                 }
 
+                var result = _articleService.Add(model);
+
+                if (result > 0)
+                {
+                    var article = _articleService.GetById(result);
+                    return RedirectToAction("Detail", new { id = article.ArticleId });
+                }
+                else
+                {
+                    var message = "Something went wrong please check it!";
+                    return View(message);
+                }
             }
             else
             {
                 var message = string.Join("|", ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage));
-                return View(message);
             }
-
             return View();
+        }
+
+        public IActionResult Detail(int id)
+        {
+            var article = _articleService.GetById(id);
+            var model = new GeneralViewModel
+            {
+                Article = article
+            };
+            return View(model);
         }
     }
 }

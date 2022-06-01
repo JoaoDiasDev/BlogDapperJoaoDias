@@ -10,7 +10,7 @@ namespace BlogDapperJoaoDias.Helpers
             _environment = hosting;
         }
 
-        public async Task<string> Upload(IFormFile file)
+        public async Task<string?> Upload(IFormFile file)
         {
             var result = "";
             if (file.Length > 0)

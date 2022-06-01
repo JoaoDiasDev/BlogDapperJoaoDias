@@ -1,4 +1,5 @@
 ﻿using BlogDapperJoaoDias.Entities;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using System.Data;
 
@@ -18,7 +19,27 @@ namespace BlogDapperJoaoDias.Services
         public int Add(Article article)
         {
             var result = _connection.Insert(article);
-            return result > 0 ? int.Parse(result.ToString()) : 0;
+            if (result > 0)
+            {
+                return int.Parse(result.ToString());
+            }
+
+            return 0;
+        }
+
+        public Article GetById(int id)
+        {
+            var article = new Article();
+            try
+            {
+                article = _connection.Query<Article>(@"select * from Articles where ArticleId = " + id)
+                    .FirstOrDefault();
+                return article;
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
         }
     }
 }
