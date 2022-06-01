@@ -65,7 +65,7 @@ namespace BlogDapperJoaoDias.Controllers
                 if (result > 0)
                 {
                     var article = _articleService.GetById(result);
-                    return RedirectToAction("Detail", new { id = article.ArticleId });
+                    return RedirectToAction("Detail", new { id = article.Guid });
                 }
                 else
                 {
@@ -82,9 +82,10 @@ namespace BlogDapperJoaoDias.Controllers
             return View();
         }
 
-        public IActionResult Detail(int id)
+        public IActionResult Detail(string id)
         {
-            var article = _articleService.GetById(id);
+            //var article = _articleService.GetById(id);
+            var article = _articleService.GetByGuid(id);
             var model = new GeneralViewModel
             {
                 Article = article

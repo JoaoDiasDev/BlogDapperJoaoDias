@@ -41,5 +41,20 @@ namespace BlogDapperJoaoDias.Services
                 throw new ArgumentException(e.Message);
             }
         }
+        public Article GetByGuid(string guid)
+        {
+            var article = new Article();
+            try
+            {
+                var param = new DynamicParameters();
+                param.Add("@guid", guid);
+                article = _connection.Query<Article>(@"select * from Articles where Guid = @guid ", param).FirstOrDefault();
+                return article;
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.Message);
+            }
+        }
     }
 }
