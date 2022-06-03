@@ -18,5 +18,36 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
 
             return View(admin);
         }
+
+        [HttpPost, AutoValidateAntiforgeryToken]
+        public IActionResult Index(Entities.Admin admin)
+        {
+            if (admin.Username != "" || admin.Password != "")
+            {
+                Entities.Admin myAdmin = adminService.Login(admin);
+                if (myAdmin == null)
+                {
+                    ViewBag.Error = "Something went wrong please try it again!";
+                    return View(admin);
+                }
+                else
+                {
+                    var userIdCookie = new CookieOptions();
+                    userIdCookie.Expires = DateTime.Now.AddDays(3);
+                    Response.Cookies.Append("userid", myAdmin.AdminId.ToString(), userIdCookie);
+                    var usernameCookie = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(3),
+                    };
+                    Response.Cookies.Append("username", myAdmin.Username, usernameCookie);
+                    return RedirectToAction("index", "Home");
+                }
+            }
+            else
+            {
+                ViewBag.Error = "Please check your username or passwor";
+                return View(admin);
+            }
+        }
     }
 }

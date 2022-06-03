@@ -23,7 +23,7 @@ namespace BlogDapperJoaoDias.Services
                 var parameters = new DynamicParameters();
                 parameters.Add("@username", admin.Username);
                 parameters.Add("@password", admin.Password);
-                myAdmin = _connection.Query<Admin>($@"select id as AdminId, Username, Password from Admins where Username = @username and Password = @password ", parameters).FirstOrDefault();
+                myAdmin = _connection.Query<Admin>($@"select AdminId, Username, Password from Admins where Username = @username and Password = @password ", parameters).FirstOrDefault();
             }
             catch (Exception e)
             {
