@@ -1,4 +1,8 @@
-﻿<!doctype html>
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"];
+}
+
+<!doctype html>
 <html lang="en">
 
     <head>
@@ -16,15 +20,25 @@
         <link rel="stylesheet" href="~/vendors/nice-select/css/nice-select.css">
         <link rel="stylesheet" href="~/vendors/animate-css/animate.css">
         <link rel="stylesheet" href="~/vendors/jquery-ui/jquery-ui.css">
+        <link rel="stylesheet" href="~/admin/bootstrap.min.css">
         <!-- main css -->
         <link rel="stylesheet" href="~/css/style.css">
         <link rel="stylesheet" href="~/css/responsive.css">
     </head>
 <body>
 
-<partial name ="_header" />
+<div class="container">
+    <div class="row">
+        @if (controller?.ToString() != "Login")
+            {
+                <partial name ="_header" />
+            }
+
 @RenderBody()
 <partial name ="_footer" />
+
+    </div>
+</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="~/js/jquery-3.2.1.min.js"></script>
@@ -42,6 +56,7 @@
 <script src="~/js/theme.js"></script>
 <script src="~/js/jquery.validate.min.js"></script>
 <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/admin/bootstrap.min.js"></script>
 @await RenderSectionAsync("Scripts",false)
 </body>
 </html>

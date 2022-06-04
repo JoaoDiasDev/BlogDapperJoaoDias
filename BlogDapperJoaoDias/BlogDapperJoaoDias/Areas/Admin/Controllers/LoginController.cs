@@ -40,12 +40,12 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
                         Expires = DateTime.Now.AddDays(3),
                     };
                     Response.Cookies.Append("username", myAdmin.Username, usernameCookie);
-                    return RedirectToAction("index", "Home");
+                    return RedirectToAction("Index", "Admin");
                 }
             }
             else
             {
-                ViewBag.Error = "Please check your username or passwor";
+                ViewBag.Error = "Please check your username or password";
                 return View(admin);
             }
         }

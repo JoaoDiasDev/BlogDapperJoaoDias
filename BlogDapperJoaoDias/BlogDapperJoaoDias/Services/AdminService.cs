@@ -33,5 +33,21 @@ namespace BlogDapperJoaoDias.Services
 
             return myAdmin;
         }
+
+        public List<Admin> GetAll()
+        {
+            var userList = new List<Admin>();
+
+            try
+            {
+                userList = _connection.Query<Admin>("select * from Admins").ToList();
+            }
+            catch (Exception e)
+            {
+
+                throw new ArgumentException(e.Message);
+            }
+            return userList;
+        }
     }
 }

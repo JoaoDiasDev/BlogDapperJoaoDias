@@ -38,7 +38,7 @@ namespace BlogDapperJoaoDias.Areas.Admin.Models
                     try
                     {
                         username = context.HttpContext.Request.Cookies["username"];
-                        id = context.HttpContext.Request.Cookies["id"];
+                        id = context.HttpContext.Request.Cookies["userid"];
                         if (id == null || username == null)
                         {
                             context.HttpContext.Response.Redirect("/Admin/Login");
