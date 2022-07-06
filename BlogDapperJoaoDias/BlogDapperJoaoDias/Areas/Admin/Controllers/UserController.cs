@@ -31,14 +31,73 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
         [Route("/Admin/User/Add")]
         public IActionResult Add()
         {
-            return View();
+            Entities.Admin admin = new Entities.Admin();
+            return View(admin);
         }
 
         [Route("/Admin/User/Add")]
         [HttpPost, AutoValidateAntiforgeryToken]
         public IActionResult Add(Entities.Admin admin)
         {
-            return View();
+            int result = _adminService.Add(admin);
+            if (result == 0)
+            {
+                ViewBag.Error = "Something went wrong please try it again!";
+                return View(admin);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [Route("/Admin/User/Edit")]
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Entities.Admin admin = _adminService.Get(id);
+            return View(admin);
+        }
+
+        [Route("/Admin/User/Edit")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Entities.Admin admin)
+        {
+            Entities.Admin result = _adminService.Update(admin);
+            if (result == null)
+            {
+                ViewBag.Error = "Something went wrong please try it again!";
+                return View(admin);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [Route("/Admin/User/Delete")]
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            Entities.Admin admin = _adminService.Get(id);
+            return View(admin);
+        }
+
+        [Route("/Admin/User/Delete")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Delete(int id, IFormFile file)
+        {
+            Entities.Admin admin = _adminService.Get(id);
+            bool result = _adminService.Delete(admin);
+            if (result)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Error = "Something went wrong please try it again!";
+                return View(admin);
+            }
         }
     }
 }
