@@ -27,6 +27,21 @@ namespace BlogDapperJoaoDias.Services
             return 0;
         }
 
+        public List<Article> GetAll()
+        {
+            var articles = new List<Article>();
+            try
+            {
+                articles = _connection.Query<Article>(@"select * from Articles").ToList();
+            }
+            catch (Exception error)
+            {
+
+                throw new ArgumentException(error.Message);
+            }
+            return articles;
+        }
+
         public Article GetById(int id)
         {
             var article = new Article();
