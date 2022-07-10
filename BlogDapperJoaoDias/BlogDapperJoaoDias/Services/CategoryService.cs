@@ -1,5 +1,6 @@
 ﻿using BlogDapperJoaoDias.Entities;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using Microsoft.AspNetCore.Connections;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,14 +10,14 @@ namespace BlogDapperJoaoDias.Services
     public class CategoryService
     {
         private SqlConnection _adoSqlConnection;
-        private IDbConnection _dapperConnection;
+        private IDbConnection _connection;
         private ConnectionService _connectionService;
 
         public CategoryService(IConfiguration configuration)
         {
             _connectionService = new ConnectionService(configuration);
             _adoSqlConnection = _connectionService.DbConnection();
-            _dapperConnection = _connectionService.ForDapper();
+            _connection = _connectionService.ForDapper();
         }
 
         public List<Category> GetAllAdoNet()
@@ -51,7 +52,7 @@ namespace BlogDapperJoaoDias.Services
             List<Category> categories;
             try
             {
-                categories = _dapperConnection.Query<Category>(@"select * from Category").ToList();
+                categories = _connection.Query<Category>(@"select * from Categorys").ToList();
             }
             catch (Exception e)
             {
@@ -59,6 +60,12 @@ namespace BlogDapperJoaoDias.Services
             }
 
             return categories;
+        }
+
+        public int Add(Category category)
+        {
+            var result = _connection.Insert(category);
+            return Convert.ToInt32(result);
         }
     }
 }
