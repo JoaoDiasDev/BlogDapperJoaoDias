@@ -67,5 +67,60 @@ namespace BlogDapperJoaoDias.Services
             var result = _connection.Insert(category);
             return Convert.ToInt32(result);
         }
+
+        public Category Get(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@id", id);
+            var category = _connection.Query<Category>($@"select * from Categorys where CategoryId=@id", parameters).FirstOrDefault();
+            return category;
+        }
+
+        //Dapper Query Example
+        //public Category Update(Category category)
+        //{
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@id", category.CategoryId);
+        //    parameters.Add("@category", category.CategoryName);
+        //    parameters.Add("@slug", category.Slug);
+        //    try
+        //    {
+        //        _connection.Execute("update Categorys set CategoryName=@category, Slug=@slug where CategoryId=@id", parameters);
+        //        return category;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return new Category();
+        //    }
+        //}
+
+        public bool Update(Category category)
+        {
+            try
+            {
+                bool result = _connection.Update(category);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+        public bool Delete(Category category)
+        {
+            try
+            {
+                bool result = _connection.Delete(category);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
     }
 }

@@ -71,5 +71,19 @@ namespace BlogDapperJoaoDias.Services
                 throw new ArgumentException(e.Message);
             }
         }
+
+        public bool Delete(Article article)
+        {
+            try
+            {
+                bool result = _connection.Delete(article);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
     }
 }

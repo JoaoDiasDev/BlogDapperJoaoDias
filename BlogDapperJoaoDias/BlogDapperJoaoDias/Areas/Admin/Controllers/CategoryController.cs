@@ -51,5 +51,55 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+
+        [Route("/Admin/Category/Edit")]
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Entities.Category category = _categoryService.Get(id);
+            return View(category);
+        }
+
+        [Route("/Admin/Category/Edit")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Edit(Entities.Category category)
+        {
+            var result = _categoryService.Update(category);
+            if (result)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Error = "Something went wrong please try it again!";
+                return View(category);
+            }
+        }
+
+        [Route("/Admin/Category/Delete")]
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var category = _categoryService.Get(id);
+            return View(category);
+        }
+
+        [Route("/Admin/Category/Delete")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Delete(int id, IFormFile file)
+        {
+            var category = _categoryService.Get(id);
+            bool result = _categoryService.Delete(category);
+            if (result)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.Error = "Something went wrong please try it again!";
+                return View(category);
+            }
+        }
     }
 }
