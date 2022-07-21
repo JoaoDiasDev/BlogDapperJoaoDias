@@ -21,7 +21,7 @@ namespace BlogDapperJoaoDias.Services
             List<City> cities;
             try
             {
-                cities = _dapperConnection.Query<City>(@"select * from City").ToList();
+                cities = _dapperConnection.Query<City>(@"select * from Citys").ToList();
             }
             catch (Exception e)
             {

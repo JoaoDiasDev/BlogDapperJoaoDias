@@ -85,5 +85,28 @@ namespace BlogDapperJoaoDias.Services
                 return false;
             }
         }
+
+        public Article Update(Article article)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@id", article.ArticleId);
+            parameters.Add("@Title", article.Title);
+            parameters.Add("@category", article.CategoryId);
+            parameters.Add("@city", article.CityId);
+            parameters.Add("@status", article.Status);
+            parameters.Add("@homeview", article.HomeView);
+            parameters.Add("@slider", article.Slider);
+            parameters.Add("@seen", 1);
+            parameters.Add("@publishDate", DateTime.Now);
+            try
+            {
+                _connection.Execute("update Articles set Title=@title,CategoryId=@category,CityId=@city,Status=@status,HomeView=@homeview,Slider=@slider,Seen=@seen,PublishDate=@publishDate where ArticleId=@id", parameters);
+                return article;
+            }
+            catch (Exception)
+            {
+                return new Article();
+            }
+        }
     }
 }

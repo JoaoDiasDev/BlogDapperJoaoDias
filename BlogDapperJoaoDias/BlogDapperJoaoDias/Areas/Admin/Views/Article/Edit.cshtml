@@ -1,0 +1,117 @@
+﻿@model UserViewModel
+
+<div class="container">
+    <div class="col-12">
+        <div class="row"></div>
+        <form method="post">
+            <input type="hidden" asp-for="@Model.Article.ArticleId" value="@Model.Article.ArticleId">
+            <table class="table table-bordered">
+                <tr>
+                    <td>Status</td>
+                    <td style="font-size:20px">
+                        <label>
+                            <input type="radio" value="0" asp-for="@Model.Article.Status" />
+                            Pending
+                        </label>
+                        <label>
+                            <input type="radio" value="1" asp-for="@Model.Article.Status" />
+                            Published
+                        </label>
+                        <label>
+                            <input type="radio" value="2" asp-for="@Model.Article.Status" />
+                            Rejected
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Slider Post</td>
+                    <td style="font-size:20px">
+                        <label>
+                            <input type="radio" value="0" asp-for="@Model.Article.Slider" />
+                            No
+                        </label>
+                        <label>
+                            <input type="radio" value="1" asp-for="@Model.Article.Slider" />
+                            Yes
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="25%">Category</td>
+                    <td>
+                        <select class="form-control" asp-items="@(new SelectList(Model.CategoryList, "CategoryId", "CategoryName"))" asp-for="@Model.Article.CategoryId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td><input type="text" asp-for="@Model.Article.Title" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td>Name Surname</td>
+                    <td>@Model.Article.NameSurname</td>
+                </tr>
+                    @if (Model.Article.Image != "" && Model.Article.Image != null)
+                    {
+                    <tr>
+                        <td><label asp-for="@Model.Article.Image"></label></td>
+                        <td><a href="~/upload/@Model.Article.Image" target="_blank">Display</a></td>
+                    </tr>
+                    }
+                <tr>
+                    <td width="25%">City</td>
+                    <td>
+                        <select class="form-control" asp-items="@(new SelectList(Model.CityList, "CityId", "CityName"))" asp-for="@Model.Article.CityId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label asp-for="@Model.Article.Content"></label></td>
+                    <td>@Model.Article.Content</td>
+                </tr>
+                <tr>
+                    <td><label asp-for="@Model.Article.Email"></label></td>
+                    <td>@Model.Article.Email</td>
+                </tr>
+                <tr>
+                    <td><label asp-for="@Model.Article.Phone"></label></td>
+                    <td>@Model.Article.Phone</td>
+                </tr>
+                <tr>
+                    <td><label asp-for="@Model.Article.PublishDate"></label></td>
+                    <td>@Model.Article.PublishDate</td>
+                </tr>
+                <tr>
+                    <td><label asp-for="@Model.Article.CreatedDate"></label></td>
+                    <td>@Model.Article.CreatedDate</td>
+                </tr>
+                <tr>
+                    <td><label asp-for="@Model.Article.ModifiedDate"></label></td>
+                    <td>@Model.Article.ModifiedDate</td>
+                </tr>
+                <tr>
+                    <td>Seen Post</td>
+                    <td>@(Model.Article.Seen == 0 ? "You are first person viewed this post" : "This post has been seen")</td>
+                </tr>
+                <tr>
+                    <td>Home View</td>
+                    <td style="font-size:20px">
+                        <label>
+                            <input type="radio" value="0" asp-for="@Model.Article.HomeView" />
+                            No
+                        </label>
+                        <label>
+                            <input type="radio" value="1" asp-for="@Model.Article.HomeView" />
+                            Yes
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Comment Count</td>
+                    <td>this post has @(Model.Article.CommentCount) comments</td>
+                </tr>
+            </table>
+                <input type="submit" class="btn btn-primary" value="Edit"/>
+        </form>
+    </div>
+</div>

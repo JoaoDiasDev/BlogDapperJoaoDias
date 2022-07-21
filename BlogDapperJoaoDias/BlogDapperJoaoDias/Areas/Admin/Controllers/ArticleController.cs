@@ -55,6 +55,8 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
             }
         }
 
+        [Route("/Admin/Article/Edit")]
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var article = _articleService.GetById(id);
@@ -69,6 +71,23 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
             };
 
             return View(model);
+        }
+
+        [Route("/Admin/Article/Edit")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, UserViewModel model)
+        {
+            var article = model.Article;
+            var result = _articleService.Update(article);
+            if (result == null)
+            {
+                ViewBag.Error = "Something went wrong please try it again!";
+                return View(article);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
     }
 }

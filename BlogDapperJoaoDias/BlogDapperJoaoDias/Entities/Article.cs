@@ -30,6 +30,7 @@ namespace BlogDapperJoaoDias.Entities
         public int HomeView { get; set; }
         public int Hit { get; set; }
         public int CommentCount { get; set; }
+        public int Slider { get; set; }
 
     }
 }
