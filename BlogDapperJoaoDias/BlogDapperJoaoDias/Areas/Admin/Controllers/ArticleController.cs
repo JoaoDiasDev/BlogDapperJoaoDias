@@ -89,5 +89,23 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+
+        [Route("/Admin/Article/Status")]
+        [HttpGet]
+        public IActionResult Status(int id)
+        {
+            var articleList = _articleService.GetStatus(id);
+            ViewBag.Title = "Pending Articles";
+            if (id == 1)
+            {
+                ViewBag.Title = "Confirmed Articles";
+            }
+            else if (id == 2)
+            {
+                ViewBag.Title = "Rejected Articles";
+            }
+            return View(articleList);
+        }
     }
 }

@@ -49,5 +49,18 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
                 return View(admin);
             }
         }
+        [Route("/Admin/Login/Logout")]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            if (HttpContext.Request.Cookies.Count > 0)
+            {
+                foreach (var item in HttpContext.Request.Cookies.Keys)
+                {
+                    Response.Cookies.Delete(item);
+                }
+            }
+            return Redirect("/");
+        }
     }
 }

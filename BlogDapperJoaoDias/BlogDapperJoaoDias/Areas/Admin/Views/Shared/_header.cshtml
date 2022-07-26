@@ -34,9 +34,9 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" asp-controller="Article" asp-action="Index">Article List</a></li>
-            <li><a class="dropdown-item" href="#">Pending Article</a></li>
-            <li><a class="dropdown-item" href="#">Approved Article</a></li>
-            <li><a class="dropdown-item" href="#">Rejected Article</a></li>
+            <li><a class="dropdown-item" asp-controller="Article" asp-action="Status" asp-route-id="0">Pending Articles</a></li>
+            <li><a class="dropdown-item" asp-controller="Article" asp-action="Status" asp-route-id="1">Approved Article</a></li>
+            <li><a class="dropdown-item" asp-controller="Article" asp-action="Status" asp-route-id="2">Rejected Article</a></li>
           </ul>
         </li>
         <li class="nav-item">

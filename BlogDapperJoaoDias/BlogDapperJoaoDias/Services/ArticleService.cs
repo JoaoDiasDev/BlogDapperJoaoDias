@@ -108,5 +108,21 @@ namespace BlogDapperJoaoDias.Services
                 return new Article();
             }
         }
+
+        public List<Article> GetStatus(int status)
+        {
+            var articles = new List<Article>();
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@status", status);
+                articles = _connection.Query<Article>(@"select * from Articles where Status = @status", parameters).ToList();
+            }
+            catch (Exception error)
+            {
+                throw new ArgumentException(error.Message);
+            }
+            return articles;
+        }
     }
 }
