@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 
 namespace BlogDapperJoaoDias.Services
 {
@@ -13,10 +12,6 @@ namespace BlogDapperJoaoDias.Services
             _configuration = configuration;
             var connectionString = _configuration.GetConnectionString("DefaultConnection").ToString();
             _myConnection = new SqlConnection(connectionString);
-            if (_myConnection.State != ConnectionState.Open)
-            {
-                _myConnection.Open();
-            }
         }
 
         internal SqlConnection DbConnection()
@@ -27,12 +22,6 @@ namespace BlogDapperJoaoDias.Services
         internal SqlConnection ForDapper()
         {
             var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection").ToString());
-            var state = connection.State;
-            if (state != ConnectionState.Open)
-            {
-                connection.Open();
-            }
-
             return connection;
         }
     }

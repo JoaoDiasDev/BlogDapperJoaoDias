@@ -7,21 +7,23 @@ namespace BlogDapperJoaoDias.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private CategoryService categoryService;
+        private CategoryService _categoryService;
+        private ArticleService _articleService;
 
-        public HomeController(ILogger<HomeController> logger, CategoryService _categoryService)
+        public HomeController(IServiceProvider serviceProvider)
         {
-            _logger = logger;
-            categoryService = _categoryService;
+            _categoryService = serviceProvider.GetRequiredService<CategoryService>();
+            _articleService = serviceProvider.GetRequiredService<ArticleService>();
         }
 
         public IActionResult Index()
         {
-            var categories = categoryService.GetAll();
+            var categories = _categoryService.GetAll();
+            var articles = _articleService.GetHome();
             var model = new GeneralViewModel
             {
-                CategoryList = categories
+                CategoryList = categories,
+                ArticleList = articles
             };
             return View(model);
         }

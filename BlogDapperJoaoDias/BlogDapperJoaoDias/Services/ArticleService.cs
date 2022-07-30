@@ -27,6 +27,22 @@ namespace BlogDapperJoaoDias.Services
             return 0;
         }
 
+        internal List<Article> GetHome()
+        {
+            var articles = new List<Article>();
+            try
+            {
+                articles = _connection.Query<Article>("select * from Articles where HomeView = 1 and Status = 1 or Slider = 1").ToList();
+            }
+            catch (Exception error)
+            {
+
+                throw new ArgumentException(error.Message);
+            }
+
+            return articles;
+        }
+
         public List<Article> GetAll()
         {
             var articles = new List<Article>();
