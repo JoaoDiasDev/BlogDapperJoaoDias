@@ -1,5 +1,4 @@
 ﻿using BlogDapperJoaoDias.Entities;
-using BlogDapperJoaoDias.Models;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using System.Data;
@@ -33,16 +32,16 @@ namespace BlogDapperJoaoDias.Services
             return Convert.ToInt32(_connection.ExecuteScalar("select count(CategoryId) from Articles where CategoryId =" + categoryId).ToString());
         }
 
-        internal List<ArticleViewModel> GetHome()
+        internal List<Article> GetHome()
         {
-            var articles = new List<ArticleViewModel>();
+            var articles = new List<Article>();
             try
             {
                 //articles = _connection.Query<Article>("select * from Articles where HomeView = 1 and Status = 1 or Slider = 1").ToList();
                 string sql = @"select * from Articles
                               inner join Categorys as cat ON cat.CategoryId = Articles.CategoryId
                               where HomeView = 1 and Status = 1 and Slider = 1";
-                articles = _connection.Query<ArticleViewModel, Category, ArticleViewModel>(sql, (article, category) =>
+                articles = _connection.Query<Article, Category, Article>(sql, (article, category) =>
                 {
                     article.Category = category;
                     return article;
@@ -116,25 +115,25 @@ namespace BlogDapperJoaoDias.Services
             }
         }
 
-        public ArticleViewModel GetNext(int id)
+        public Article GetNext(int id)
         {
             var param = new DynamicParameters();
             param.Add("@id", id);
             string sql = @"select top 1 ArticleId, Guid, Title, Image from Articles
                           where ArticleId > @id
                           order by ArticleId asc";
-            var article = _connection.Query<ArticleViewModel>(sql, param).FirstOrDefault();
+            var article = _connection.Query<Article>(sql, param).FirstOrDefault();
             if (article != null)
             {
                 return article;
             }
             else
             {
-                return new ArticleViewModel();
+                return new Article();
             }
         }
 
-        public ArticleViewModel GetPrevious(int id)
+        public Article GetPrevious(int id)
         {
             var param = new DynamicParameters();
             param.Add("@id", id);
@@ -143,25 +142,25 @@ namespace BlogDapperJoaoDias.Services
                           order by ArticleId desc
                           OFFSET 0 ROWS
                           FETCH NEXT 1 ROWS ONLY";
-            var article = _connection.Query<ArticleViewModel>(sql, param).FirstOrDefault();
+            var article = _connection.Query<Article>(sql, param).FirstOrDefault();
             if (article != null)
             {
                 return article;
             }
             else
             {
-                return new ArticleViewModel();
+                return new Article();
             }
         }
 
-        public ArticleViewModel GetByGuid(string guid)
+        public Article GetByGuid(string guid)
         {
-            var article = new ArticleViewModel();
+            var article = new Article();
             try
             {
                 var param = new DynamicParameters();
                 param.Add("@guid", guid);
-                article = _connection.Query<ArticleViewModel>(@"select * from Articles where Guid = @guid ", param).FirstOrDefault();
+                article = _connection.Query<Article>(@"select * from Articles where Guid = @guid ", param).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -174,7 +173,7 @@ namespace BlogDapperJoaoDias.Services
             }
             else
             {
-                return new ArticleViewModel();
+                return new Article();
             }
         }
 
