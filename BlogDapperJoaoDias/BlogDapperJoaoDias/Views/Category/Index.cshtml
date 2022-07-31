@@ -1,37 +1,21 @@
 ﻿@model GeneralViewModel;
-        <!--================Post Slider Area =================-->
-        <section class="post_slider_area">
-			<div class="post_slider_inner owl-carousel">
-                @foreach (var item in Model.ArticleList.Where(w => w.Slider == 1))
-        {
-				<div class="item">
-					<div class="post_s_item">
-						<div class="post_img">
-							<img src="~/upload/@(item.Image)" alt="">
-						</div>
-						<div class="post_text">
-							<a class="cat" href="/Category/@item.Category.CategoryName">@item.Category.CategoryName</a>
-                            <a asp-controller="Article" asp-action="Detail" asp-route-id="@item.Guid"></a>
-							<a asp-controller="Article" asp-action="Detail" asp-route-id="@item.Guid"><h4>@item.Title</h4></a>
-							@if (item.Content.Length > 20)
-                            {
-                            <p>@(item.Content.Substring(0,20))</p>
-                        }
-                        else
-                        {
-                            <p>@item.Content</p>
-                        }
-                        <div class="date">
-								<a href="#"><i class="fa fa-calendar" aria-hidden="true"></i> @item.PublishDate.ToShortDateString()</a>
-								<a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> @item.CommentCount</a>
-							</div>
+        
+        <!--================Home Banner Area =================-->
+        <section class="banner_area">
+            <div class="banner_inner d-flex align-items-center">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+				<div class="container">
+					<div class="banner_content text-center">
+						<h2>@Model.Category.CategoryName</h2>
+						<div class="page_link">
+							<a asp-controller="Home" asp-action="Index">Home</a>
+							<a href="/Category/@Model.Category.Slug">@Model.Category.CategoryName</a>
 						</div>
 					</div>
 				</div>
-        }
-			</div>
+            </div>
         </section>
-        <!--================End Post Slider Area =================-->
+        <!--================End Home Banner Area =================-->
         
         <!--================Blog Area =================-->
         <section class="blog_area p_120">
@@ -39,7 +23,7 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="blog_left_sidebar">
-                            @foreach (var item in Model.ArticleList.Where(w => w.Slider == 0))
+                            @foreach (var item in Model.PaginationModel.ArticlesList)
                             {
                                 <article class="blog_style1">
                             	<div class="blog_img">
@@ -47,7 +31,6 @@
                             	</div>
                             	<div class="blog_text">
 									<div class="blog_text_inner">
-										<a class="cat" href="/Category/@item.Category.CategoryName">@item.Category.CategoryName</a>
 										<a asp-controller="Article" asp-action="Detail" asp-route-id="@item.Guid"><h4>@item.Title</h4></a>
                                         @if (@item.Content.Length > 50)
                                         {
@@ -65,7 +48,7 @@
                             	</div>
                             </article>
                             }
-                                @if (Model.PaginationModel.PageCount > 1)
+                            @if (Model.PaginationModel.PageCount > 1)
                             {
                                 @Html.Raw(Model.PaginationModel.Html);
                             }
@@ -171,3 +154,4 @@
             </div>
         </section>
         <!--================Blog Area =================-->
+        

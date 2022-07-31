@@ -7,15 +7,21 @@ namespace BlogDapperJoaoDias.Models
         public GeneralViewModel()
         {
             Category = new Category();
-            Article = new Article();
+            Article = new ArticleViewModel();
             CategoryList = new List<Category>();
-            ArticleList = new List<Article>();
+            ArticleList = new List<ArticleViewModel>();
             CityList = new List<City>();
+            PeviousArticle = new ArticleViewModel();
+            NextArticle = new ArticleViewModel();
+            PaginationModel = new PaginationModel();
         }
         public Category Category { get; set; }
-        public Article Article { get; set; }
+        public ArticleViewModel Article { get; set; }
         public List<Category> CategoryList { get; set; }
-        public List<Article> ArticleList { get; set; }
+        public List<ArticleViewModel> ArticleList { get; set; }
         public List<City> CityList { get; set; }
+        public ArticleViewModel PeviousArticle { get; set; }
+        public ArticleViewModel NextArticle { get; set; }
+        public PaginationModel PaginationModel { get; set; }
     }
 }

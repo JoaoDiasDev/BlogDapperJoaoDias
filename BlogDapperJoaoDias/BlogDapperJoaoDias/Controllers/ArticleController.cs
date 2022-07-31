@@ -78,17 +78,20 @@ namespace BlogDapperJoaoDias.Controllers
                 var message = string.Join("|", ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage));
+                return View(message);
             }
-            return View();
         }
 
         public IActionResult Detail(string id)
         {
-            //var article = _articleService.GetById(id);
             var article = _articleService.GetByGuid(id);
+            var previousArticle = _articleService.GetPrevious(article.ArticleId);
+            var nextArticle = _articleService.GetNext(article.ArticleId);
             var model = new GeneralViewModel
             {
-                Article = article
+                Article = article,
+                PeviousArticle = previousArticle,
+                NextArticle = nextArticle
             };
             return View(model);
         }

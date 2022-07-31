@@ -20,6 +20,16 @@ namespace BlogDapperJoaoDias.Services
             _connection = _connectionService.ForDapper();
         }
 
+
+        public Category GetSlug(string slug)
+        {
+            var category = new Category();
+            var parameters = new DynamicParameters();
+            parameters.Add("@slug", slug);
+            category = _connection.QueryFirstOrDefault<Category>("select * from Categorys where Slug = @slug", parameters);
+            return category;
+        }
+
         public List<Category> GetAllAdoNet()
         {
             var categories = new List<Category>();
