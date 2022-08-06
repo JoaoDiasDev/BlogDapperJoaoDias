@@ -193,7 +193,7 @@
                         </div>
                         <div class="comment-form">
                             <h4>Leave a Reply</h4>
-                            <form>
+                            
                                 <div class="form-group form-inline">
                                   <div class="form-group col-lg-6 col-md-6 name">
                                     <input type="text" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
@@ -203,13 +203,10 @@
                                   </div>										
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
-                                </div>
-                                <div class="form-group">
                                     <textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""></textarea>
                                 </div>
-                                <a href="#" class="primary-btn submit_btn">Post Comment</a>	
-                            </form>
+                                <a href="jasvacript:saveComment();" class="primary-btn submit_btn">Post Comment</a>	
+                                
                         </div>
         			</div>
                     <div class="col-lg-4">
@@ -343,3 +340,49 @@
             </div>
         </section>
         <!--================Blog Area =================-->
+@section Scripts{
+        <script type="text/javascript">
+function saveComment() {
+        var name = $('#name').val();
+        var email = $('#email').val();
+        var message = $('#message').val();
+            if (name == "") {
+                alert("Name is required");
+                return false;
+            }
+            if (email == "") {
+                alert("Email is required");
+                return false;
+            }
+    if (message == "") {
+        alert("Message is required");
+        return false;
+    }
+    else {
+                $.ajax({
+                    url: "Comment/Add/@(Model.Article.Guid)",
+                    method: "POST",
+                    data: {
+                        "name": name,
+                        "email": email,
+                        "message": message
+                    },
+                    dataType: "JSON",
+                    success: function(data) {
+                        if (data.success) {
+                            alert("Comment Added Successfully");
+                            $('#name').val('');
+                            $('#email').val('');
+                            $('#message').val('');
+
+                        }
+                        else {
+                            alert("Something went wrong try it again");
+                        }
+                    }
+                });
+    }
+    }    
+        </script>
+}   
+                                  
