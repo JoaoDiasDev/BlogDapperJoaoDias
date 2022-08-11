@@ -14,6 +14,7 @@ namespace BlogDapperJoaoDias.Models
             PeviousArticle = new Article();
             NextArticle = new Article();
             PaginationModel = new PaginationModel();
+            Comments = new List<Comment>();
         }
         public Category Category { get; set; }
         public Article Article { get; set; }
@@ -23,5 +24,6 @@ namespace BlogDapperJoaoDias.Models
         public Article PeviousArticle { get; set; }
         public Article NextArticle { get; set; }
         public PaginationModel PaginationModel { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

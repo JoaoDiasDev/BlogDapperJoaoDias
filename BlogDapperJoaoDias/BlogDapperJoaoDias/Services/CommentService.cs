@@ -1,4 +1,5 @@
 ﻿using BlogDapperJoaoDias.Entities;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using System.Data;
 
@@ -20,17 +21,20 @@ namespace BlogDapperJoaoDias.Services
             try
             {
                 var result = _connection.Insert(comment);
-                if (result > 0)
-                {
-                    return int.Parse(result.ToString());
-                }
-
+                return int.Parse(result.ToString());
             }
             catch (Exception)
             {
 
                 return 0;
             }
+        }
+
+        public List<Comment> GetByArticle(int id)
+        {
+            var comments = new List<Comment>();
+            comments = _connection.Query<Comment>("select * from Comments where ArticleId = " + id + " order by CommentId asc").ToList();
+            return comments;
         }
     }
 }

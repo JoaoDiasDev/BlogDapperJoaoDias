@@ -12,6 +12,7 @@ namespace BlogDapperJoaoDias.Controllers
         private CityService _cityService;
         private IWebHostEnvironment _hostingEnvironment;
         private ArticleService _articleService;
+        private CommentService _commentService;
 
         public ArticleController(IServiceProvider serviceProvider)
         {
@@ -19,6 +20,7 @@ namespace BlogDapperJoaoDias.Controllers
             _cityService = serviceProvider.GetRequiredService<CityService>();
             _hostingEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
             _articleService = serviceProvider.GetRequiredService<ArticleService>();
+            _commentService = serviceProvider.GetRequiredService<CommentService>();
         }
 
         public IActionResult Index()
@@ -87,11 +89,13 @@ namespace BlogDapperJoaoDias.Controllers
             var article = _articleService.GetByGuid(id);
             var previousArticle = _articleService.GetPrevious(article.ArticleId);
             var nextArticle = _articleService.GetNext(article.ArticleId);
+            var comments = _commentService.GetByArticle(article.ArticleId);
             var model = new GeneralViewModel
             {
                 Article = article,
                 PeviousArticle = previousArticle,
-                NextArticle = nextArticle
+                NextArticle = nextArticle,
+                Comments = comments
             };
             return View(model);
         }
