@@ -1,0 +1,48 @@
+﻿@model GeneralViewModel;
+
+<div class="col-lg-4">
+    <div class="blog_right_sidebar">
+        <form asp-controller="Home" asp-action="Search" method="get">
+        <aside class="single_sidebar_widget search_widget">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" placeholder="Search Posts">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+                </span>
+            </div><!-- /input-group -->
+            <div class="br"></div>
+            </aside>
+        </form>
+        <aside class="single_sidebar_widget popular_post_widget">
+            <h3 class="widget_title">Popular Posts</h3>
+            @foreach (var item in Model.ArticleList)
+            {
+            <div class="media post_item">
+                <img src="~/upload/@item.Image" alt="post" width="40" height="40">
+                <div class="media-body">
+                    <a asp-controller="Article" asp-action="Detail" asp-route-id="@item.Guid"><h3>@item.Title</h3></a>
+                    <p>@item.PublishDate.ToShortDateString()</p>
+                </div>
+            </div>
+            }
+            <div class="br"></div>
+        </aside>
+        <aside class="single_sidebar_widget post_category_widget">
+            <h4 class="widget_title">Post Categories</h4>
+            <ul class="list cat-list">
+
+                @foreach (var category in Model.CategoryList)
+                {
+                    <li>
+                        <a href="/Category/@category.Slug" class="d-flex justify-content-between">
+                            <p>@category.CategoryName</p>
+                            
+                        </a>
+                    </li>
+                }
+
+            </ul>
+            <div class="br"></div>
+        </aside>
+    </div>
+</div>

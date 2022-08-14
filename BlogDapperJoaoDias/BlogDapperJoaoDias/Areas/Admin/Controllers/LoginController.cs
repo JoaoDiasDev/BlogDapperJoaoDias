@@ -40,7 +40,7 @@ namespace BlogDapperJoaoDias.Areas.Admin.Controllers
                         Expires = DateTime.Now.AddDays(3),
                     };
                     Response.Cookies.Append("username", myAdmin.Username, usernameCookie);
-                    return RedirectToAction("Index", "Admin");
+                    return Redirect("/Admin");
                 }
             }
             else

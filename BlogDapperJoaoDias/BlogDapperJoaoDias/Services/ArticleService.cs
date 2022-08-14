@@ -57,6 +57,59 @@ namespace BlogDapperJoaoDias.Services
             return articles;
         }
 
+        public List<Article> Search(string q)
+        {
+            var articles = new List<Article>();
+            try
+            {
+                articles = _connection.Query<Article>(@"select * from Articles where Status = 1 and Articles.Title like @q 
+                            or Articles.Content like @q order by ArticleId desc", new { q = "%" + q + "%" }).Take(5).ToList();
+            }
+            catch (Exception e)
+            {
+
+                throw new ArgumentException(e.Message);
+            }
+            return articles;
+        }
+
+        public List<Article> GetArticles(int page = 1)
+        {
+            var articles = new List<Article>();
+            try
+            {
+                var parameters = new DynamicParameters();
+                int pagesize = 3;
+                int offset = (page - 1) * 3;
+                parameters.Add("@offset", offset);
+                parameters.Add("@pagesize", pagesize);
+
+                string sql = @"select * from Articles 
+                               inner join Categorys as cat ON cat.CategoryId = Articles.CategoryId
+                               where HomeView = 1 and Status = 1 or Slider = 1
+                               order by PublishDate desc
+                               OFFSET @offset ROWS
+                               FETCH NEXT @pagesize ROWS ONLY";
+                articles = _connection.Query<Article, Category, Article>(sql, (article, category) =>
+                {
+                    article.Category = category;
+                    return article;
+                }, parameters, splitOn: "CategoryId").ToList();
+            }
+            catch (Exception error)
+            {
+
+                throw new ArgumentException(error.Message);
+            }
+
+            return articles;
+        }
+
+        public int CountArticles()
+        {
+            return Convert.ToInt32(_connection.ExecuteScalar("select count(ArticleId) from Articles where Status = 1").ToString());
+        }
+
         public List<Article> GetCategory(int id, int page = 1)
         {
             var articles = new List<Article>();
@@ -71,7 +124,7 @@ namespace BlogDapperJoaoDias.Services
                 string sql = @"select * from Articles
                               where Status = 1
                               and CategoryId = @id
-                              order by PublishingDate desc
+                              order by PublishDate desc
                               OFFSET @offset ROWS
                               FETCH NEXT @pagesize ROWS ONLY";
                 articles = _connection.Query<Article>(sql, parameters).ToList();

@@ -1,4 +1,5 @@
-﻿using BlogDapperJoaoDias.Models;
+﻿using BlogDapperJoaoDias.Helpers;
+using BlogDapperJoaoDias.Models;
 using BlogDapperJoaoDias.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,21 +10,23 @@ namespace BlogDapperJoaoDias.Controllers
     {
         private CategoryService _categoryService;
         private ArticleService _articleService;
+        private IServiceProvider _service;
 
         public HomeController(IServiceProvider serviceProvider)
         {
             _categoryService = serviceProvider.GetRequiredService<CategoryService>();
             _articleService = serviceProvider.GetRequiredService<ArticleService>();
+            _service = serviceProvider;
         }
 
         public IActionResult Index()
         {
-            var categories = _categoryService.GetAll();
-            var articles = _articleService.GetHome();
+            int page = HttpContext.Request.Query["page"].Count == 0 ? 1 : int.Parse(HttpContext.Request.Query["page"]);
+            var paginationHelpers = new PaginationHelpers(_service);
+            var paginationModel = paginationHelpers.ArticlePagination(page);
             var model = new GeneralViewModel
             {
-                CategoryList = categories,
-                ArticleList = articles
+                PaginationModel = paginationModel
             };
             return View(model);
         }
@@ -37,6 +40,19 @@ namespace BlogDapperJoaoDias.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Route("/SearchResults")]
+        public IActionResult Search()
+        {
+            var searchQuery = HttpContext.Request.Query["q"];
+            var articles = _articleService.Search(searchQuery);
+            var model = new GeneralViewModel
+            {
+                ArticleList = articles
+            };
+
+            return View(model);
         }
     }
 }

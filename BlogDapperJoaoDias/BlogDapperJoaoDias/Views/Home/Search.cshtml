@@ -6,10 +6,9 @@
             	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
 				<div class="container">
 					<div class="banner_content text-center">
-						<h2>@Model.Category.CategoryName</h2>
+						<h2>Search Results</h2>
 						<div class="page_link">
 							<a asp-controller="Home" asp-action="Index">Home</a>
-							<a href="/Category/@Model.Category.Slug">@Model.Category.CategoryName</a>
 						</div>
 					</div>
 				</div>
@@ -23,7 +22,7 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="blog_left_sidebar">
-                            @foreach (var item in Model.PaginationModel.ArticlesList)
+                            @foreach (var item in Model.ArticleList)
                             {
                                 <article class="blog_style1">
                             	<div class="blog_img">
@@ -47,10 +46,6 @@
 									</div>
                             	</div>
                             </article>
-                            }
-                            @if (Model.PaginationModel.PageCount > 1)
-                            {
-                                @Html.Raw(Model.PaginationModel.Html);
                             }
                         </div>
                     </div>
